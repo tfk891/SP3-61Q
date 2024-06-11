@@ -1,168 +1,123 @@
-// Script.js 
-// Adding event listener to the form element 
-document 
-    .getElementById("surveyForm") 
-    .addEventListener( 
-        "submit", 
-        function (event) { 
-            // PreventDefault() is used to avoid 
-            // Refreshing of browser while submit 
-            event.preventDefault(); 
-  
-            let nameField = 
-                document.getElementById( 
-                    "name"
-                ); 
-            let ageField = 
-                document.getElementById( 
-                    "age"
-                ); 
-            let errorText = 
-                document.getElementById( 
-                    "errorText"
-                ); 
-  
-            let name = nameField.value; 
-            let age = ageField.value; 
-  
-            // Creating a regular expression for  
-            // Name field 
-            let Regex = /^[A-Za-z ]+$/; 
-  
-            // If name does not matches the  
-            // Regular expression 
-            if (!name.match(Regex)) { 
-                nameField.classList.add( 
-                    "error"
-                ); 
-                errorText.innerHTML = 
-                    `Name field should only contain  
-                     English alphabets and spaces`; 
-                errorText.classList.add( 
-                    "errorText"
-                ); 
-                return; 
-            } 
-  
-            // Check whether age is between 1 and 150 
-            else if ( 
-                isNaN(age) || 
-                age < 1 || 
-                age > 150 
-            ) { 
-                ageField.classList.add( 
-                    "error"
-                ); 
-                errorText.innerHTML = 
-                    `Age should only contain valid 
-                     values ( 1 - 150 )`; 
-                errorText.classList.add( 
-                    "errorText"
-                ); 
-                return; 
-            } 
-  
-            // Removing red border in name field 
-            if ( 
-                nameField.classList.contains( 
-                    "error"
-                ) 
-            ) 
-                nameField.classList.remove( 
-                    "error"
-                ); 
-  
-            // Removing red border in age field 
-            if ( 
-                ageField.classList.contains( 
-                    "error"
-                ) 
-            ) 
-                ageField.classList.remove( 
-                    "error"
-                ); 
-  
-            // Adding success message and styles 
-            errorText.innerHTML = 
-                "Submitted Successfully"; 
-            errorText.classList.add( 
-                "successText"
-            ); 
-  
-            const formData = 
-                new FormData( 
-                    event.target 
-                ); 
-            const formValues = {}; 
-  
-            // Storing each values in the object 
-            formData.forEach( 
-                (value, key) => { 
-                    formValues[key] = 
-                        value; 
-                } 
-            ); 
-  
-            // Calling convert function 
-            const csvContent = 
-                convertToCSV( 
-                    formValues 
-                ); 
-            const blob = new Blob( 
-                [csvContent], 
-                { type: "text/csv" } 
-            ); 
-  
-            // Creating a link for downloading 
-            // Excel sheet 
-            const link = 
-                document.createElement( 
-                    "a"
-                ); 
-            link.href = 
-                window.URL.createObjectURL( 
-                    blob 
-                ); 
-            link.download = 
-                "survey_data.csv"; 
-            link.click(); 
-  
-            // Reseting the form after certain 
-            // Timeout 2000ms => 2s 
-            setTimeout( 
-                document 
-                    .getElementById( 
-                        "surveyForm"
-                    ) 
-                    .reset(), 
-                2000 
-            ); 
-        } 
-    ); 
-  
-// Function to convert object to csv 
-function convertToCSV(objArr) { 
-    const array = 
-        typeof objArr !== "object"
-            ? JSON.parse(objArr) 
-            : objArr; 
-    let result = ""; 
-  
-    // Add commas to make it as csv 
-    const header = 
-        Object.keys(array).join(",") + 
-        "\n"; 
-    result += header; 
-  
-    for (const item in array) { 
-        if ( 
-            array.hasOwnProperty(item) 
-        ) { 
-            result += array[item] + ","; 
-        } 
-    } 
-    result = result.slice(0, -1); 
-    result += "\n"; 
-  
-    return result; 
-}
+// data.json 
+[ 
+	{ 
+		"id": 1001, 
+		"imageUrl": "gfg.png", 
+		"firstName": "Thomas", 
+		"lastName": "Leannon", 
+		"email": "Thomas.Leannon@gfg.com", 
+		"contactNumber": "4121091095", 
+		"age": 43, 
+		"dob": "26/08/1979", 
+		"salary": 1, 
+		"address": "Address1"
+	}, 
+	{ 
+		"id": 1002, 
+		"imageUrl": "gfg.png", 
+		"firstName": "Faye", 
+		"lastName": "Sauer", 
+		"email": "Faye.Sauergfg.com", 
+		"contactNumber": "4914696673", 
+		"age": 60, 
+		"dob": "28/06/1962", 
+		"salary": 2, 
+		"address": "Address2"
+	}, 
+	{ 
+		"id": 1003, 
+		"imageUrl": "gfg.png", 
+		"firstName": "Deven", 
+		"lastName": "Halvorson", 
+		"email": "Deven.Halvorsongfg.com", 
+		"contactNumber": "4479795571", 
+		"age": 29, 
+		"dob": "06/01/1993", 
+		"salary": 3, 
+		"address": "Address3"
+	}, 
+	{ 
+		"id": 1004, 
+		"imageUrl": "gfg.png", 
+		"firstName": "Melisa", 
+		"lastName": "Schuppe", 
+		"email": "Melisa.Schuppegfg.com", 
+		"contactNumber": "4443995334", 
+		"age": 38, 
+		"dob": "06/09/1984", 
+		"salary": 4, 
+		"address": "Address4"
+	}, 
+	{ 
+		"id": 1005, 
+		"imageUrl": "gfg.png", 
+		"firstName": "Dell", 
+		"lastName": "Kris", 
+		"email": "Dell.Krisgfg.com", 
+		"contactNumber": "4505692843", 
+		"age": 89, 
+		"dob": "14/03/1933", 
+		"salary": 5, 
+		"address": "Address5"
+	}, 
+	{ 
+		"id": 1006, 
+		"imageUrl": "gfg.png", 
+		"firstName": "Marcia", 
+		"lastName": "Gutmann", 
+		"email": "Marcia.Gutmanngfg.com", 
+		"contactNumber": "4746199430", 
+		"age": 56, 
+		"dob": "24/07/1966", 
+		"salary": 6, 
+		"address": "Address6"
+	}, 
+	{ 
+		"id": 1007, 
+		"imageUrl": "gfg.png", 
+		"firstName": "Jarrod", 
+		"lastName": "Ortiz", 
+		"email": "Jarrod.Ortizgfg.com", 
+		"contactNumber": "4859095720", 
+		"age": 82, 
+		"dob": "26/12/1940", 
+		"salary": 7, 
+		"address": "Address7"
+	}, 
+	{ 
+		"id": 1008, 
+		"imageUrl": "gfg.png", 
+		"firstName": "Gabriella", 
+		"lastName": "Wilkinson", 
+		"email": "Gabriella.Wilkinsongfg.com", 
+		"contactNumber": "4379190775", 
+		"age": 36, 
+		"dob": "24/06/1986", 
+		"salary": 8, 
+		"address": "Address8"
+	}, 
+	{ 
+		"id": 1009, 
+		"imageUrl": "gfg.png", 
+		"firstName": "Elisabeth", 
+		"lastName": "Hayes", 
+		"email": "Elisabeth.Hayesgfg.com", 
+		"contactNumber": "4394091994", 
+		"age": 66, 
+		"dob": "17/08/1956", 
+		"salary": 9, 
+		"address": "Address9"
+	}, 
+	{ 
+		"id": 1010, 
+		"imageUrl": "gfg.png", 
+		"firstName": "Jaime", 
+		"lastName": "Reichel", 
+		"email": "Jaime.Reichelgfg.com", 
+		"contactNumber": "4622392580", 
+		"age": 41, 
+		"dob": "21/01/1981", 
+		"salary": 10, 
+		"address": "Address10"
+	} 
+]
